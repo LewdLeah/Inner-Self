@@ -85,9 +85,11 @@ modifier(text);
 17. Copy the *full* code from the page above and paste into your empty `Library` tab
 18. Click the big yellow `SAVE` button in the top right corner
 
-### *And you're done! Remember to read the in-game config card!*
+### *And you're done!*
 
 All adventures played from your scenario will now include Inner Self (even existing adventures)
+
+Also, remember to read the in-game config card!
 
 ---
 
