@@ -351,7 +351,7 @@ function InnerSelf(hook) {
         }
     }
     /**
-     * Generates a simple hash of the last 50 actions in history
+     * Generates a simple hashcode of the last 50 actions in history
      * Used to detect retry or erase + continue turns
      * @returns {string} Hexadecimal hash string
      */
@@ -361,7 +361,7 @@ function InnerSelf(hook) {
         const serialized = JSON.stringify(history.slice(-50));
         for (let i = 0; i < serialized.length; i++) {
             // Classic polynomial rolling hash, nothing fancy
-            n = (n * 31 + serialized.charCodeAt(i)) | 0;
+            n = ((31 * n) + serialized.charCodeAt(i)) | 0;
         }
         return n.toString(16);
     };
