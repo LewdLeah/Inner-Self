@@ -612,7 +612,7 @@ function InnerSelf(hook) {
                     message: "Please visit my profile @LewdLeah through the link above and read my bio for simple steps to add Inner Self to your own scenarios! ❤️"
                 },
                 {
-                    message: `Inner Self ${version} is a general-purpose and (soon to be) open-source AI Dungeon mod by LewdLeah. You have my full permission to use it with any scenario!`
+                    message: `Inner Self ${version} is a general-purpose and open-source AI Dungeon mod by LewdLeah. You have my full permission to use it with any scenario!`
                 },
                 {
                     // This is where players list their NPCs
