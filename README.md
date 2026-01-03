@@ -96,7 +96,7 @@ All adventures played from your scenario will now include Inner Self (even exist
 ## Gameplay Tips
 
 <details>
-<summary><b>(expand)</b></summary>
+<summary><b>(click to expand)</b></summary>
 
 - Read the in-game config card to learn how to easily add NPCs
 - Set response length to 200 tokens if you notice short or empty outputs
@@ -113,7 +113,7 @@ All adventures played from your scenario will now include Inner Self (even exist
 ## For Creators
 
 <details>
-<summary><b>(expand)</b></summary>
+<summary><b>(click to expand)</b></summary>
 
 ### Creator Control Panel
 
@@ -168,7 +168,7 @@ Your task is to transform the character concept into a JSON object
 ## Useful Links
 
 <details>
-<summary><b>(expand)</b></summary>
+<summary><b>(click to expand)</b></summary>
 
 ### Basic Demo Scenario
 - [Inner Self](https://play.aidungeon.com/scenario/tsu1WMJXaaAZ/inner-self)
