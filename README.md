@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/LewdLeah/InnerSelf/main/assets/cover.png" width="800">
+</p>
+
 # Inner Self 🎭
 ### *Giving characters minds of their own~*
 Made by LewdLeah ❤️
