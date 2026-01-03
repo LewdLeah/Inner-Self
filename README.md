@@ -116,11 +116,9 @@ All adventures played from your scenario will now include Inner Self (even exist
 <summary><b>(click to expand)</b></summary>
 
 ### Creator Control Panel
-
 At the very top of the Inner Self `Library` script tab, you'll find optional settings with simple explanations. Modify these before publishing to customize your scenario's default experience.
 
 ### Preparing Scenario NPCs
-
 Prefix regular AID story card titles with the `@` symbol so Inner Self knows which characters should think:
 - Example card name: `@Leah`
 - Remember to use simple first names here!
@@ -128,7 +126,6 @@ Prefix regular AID story card titles with the `@` symbol so Inner Self knows whi
 Alternatively, you can write a list of important scenario NPCs in the creator control panel, discussed above. Whichever is easier for you. Either way, Inner Self will use the context of your scenario to improve the thought formation process.
 
 ### Custom NPC Brains
-
 For advanced scenarios, you can even load NPC brains with initial thoughts:
 1. Transfer any NPC brain card from adventure to scenario
 2. Leave the card entry completely empty
