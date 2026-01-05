@@ -226,9 +226,7 @@ Your task is to transform the character concept into a JSON object
 ## Contributions
 
 <details>
-<summary><b>(click to expand)</b></summary>
 
-### Contributors
 - [-Vinny-](https://play.aidungeon.com/profile/-Vinny-)
 
 </details>
