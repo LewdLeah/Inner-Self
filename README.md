@@ -225,11 +225,7 @@ Your task is to transform the character concept into a JSON object
 
 ## Contributions
 
-<details>
-
 - [-Vinny-](https://play.aidungeon.com/profile/-Vinny-)
-
-</details>
 
 <p align="center"><i>Thank you so much for your curiosity and support~</i> ❤️</p>
 <p align="center"><b>Inner Self v1.0.1</b> · Made with love by <a href="https://play.aidungeon.com/profile/LewdLeah">LewdLeah</a></p>
