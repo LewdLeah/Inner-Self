@@ -95,9 +95,6 @@ All adventures played from your scenario will now include Inner Self (even exist
 
 ## Gameplay Tips
 
-<details>
-<summary><b>(click to expand)</b></summary>
-
 - Read the in-game config card to learn how to easily add NPCs
 - Set response length to 200 tokens if you notice short or empty outputs
 - Enable scripts if you don't see a config card (homepage > settings > gameplay)
@@ -106,14 +103,9 @@ All adventures played from your scenario will now include Inner Self (even exist
 - Different story models also tend to manage brains differently
 - But avoid Atlas and Raven models for this one 😅
 
-</details>
-
 ---
 
 ## For Creators
-
-<details>
-<summary><b>(click to expand)</b></summary>
 
 ### Creator Control Panel
 At the very top of the Inner Self `Library` script tab, you'll find optional settings with simple explanations. Modify these before publishing to customize your scenario's default experience.
@@ -184,8 +176,6 @@ Your task is to transform the character concept into a JSON object
 - Be creative when roleplaying as the character
 - Respect the overarching setting
 ````
-
-</details>
 
 </details>
 
