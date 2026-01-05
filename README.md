@@ -204,10 +204,32 @@ Your task is to transform the character concept into a JSON object
 - [AI Dungeon official Discord server invite](https://discord.gg/MXNqpSbuZT) (required to access the first link)
 - Please remember this is a personal passion project for me, something I do because I enjoy it, not as a job. Your kindness, patience, and love mean so much to me~ ❤️
 
-### Contributions
+</details>
+
+---
+
+## Changelog
+
+<details>
+<summary><b>(click to expand)</b></summary>
+
+### 1.0.1
+- Added parameter "Halve thought chance for user actions (Do/Say/Story)" to let players decide whether to halve thought formation chances (by [-Vinny-](https://play.aidungeon.com/profile/-Vinny-))
+
+### 1.0.0
+- InnerSelf Released!
+
+</details>
+
+## Contributions
+
+<details>
+<summary><b>(click to expand)</b></summary>
+
+### Contributors
 - [-Vinny-](https://play.aidungeon.com/profile/-Vinny-)
 
 </details>
 
 <p align="center"><i>Thank you so much for your curiosity and support~</i> ❤️</p>
-<p align="center"><b>Inner Self v1.0.0</b> · Made with love by <a href="https://play.aidungeon.com/profile/LewdLeah">LewdLeah</a></p>
+<p align="center"><b>Inner Self v1.0.1</b> · Made with love by <a href="https://play.aidungeon.com/profile/LewdLeah">LewdLeah</a></p>

@@ -11,7 +11,7 @@ globalThis.MainSettings = (class MainSettings {
     //—————————————————————————————————————————————————————————————————————————————————
 
     /**
-     * Inner Self v1.0.0
+     * Inner Self v1.0.1
      * Made by LewdLeah on January 3, 2026
      * Gives story characters the ability to learn, plan, and adapt over time
      * Inner Self is free and open-source for anyone! ❤️
@@ -211,7 +211,7 @@ globalThis.MainSettings = (class MainSettings {
 //—————————————————————————————————————————————————————————————————————————————————————
 
 /**
- * Inner Self v1.0.0
+ * Inner Self v1.0.1
  * Made by LewdLeah on January 3, 2026
  * Gives story characters the ability to learn, plan, and adapt over time
  * Inner Self is free and open-source for anyone! ❤️
@@ -276,7 +276,7 @@ function InnerSelf(hook) {
     ,
     }; //——————————————————————————————————————————————————————————————————————————————
 
-    const version = "v1.0.0";
+    const version = "v1.0.1";
     // Validate that all required AI Dungeon global properties exist
     // Without these, Inner Self literally cannot function
     if (
