@@ -2607,7 +2607,7 @@ I hope you will have lots of fun!
                 relabel ? `old = ${target};\n` : ""
             )}${target} = ${(
                 relabel ? `[${IS.label}, old${(
-                    old.includes("→") ? `\n  .slice(old.indexOf("→") + 1)\n  .trim()\n` : ".trim()"
+                    old.includes("→") ? "\n  .slice(old.indexOf(\"→\") + 1)\n  .trim()\n" : ".trim()"
                 )}].join(" → ")` : JSON.stringify(agent.brain[key])
             )};`;
         });
