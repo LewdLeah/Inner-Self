@@ -2739,7 +2739,7 @@ I hope you will have lots of fun!
         // Add metadata and initialize the brain object in the log
         agent.card.entry = `${agent.card.entry.trimStart()}\n${path("metadata")} = ${(
             JSON.stringify(agent.metadata, null, 2)
-        )};\n${path()} = {};`;
+        )};\n${path()} = {};\n// Entry: Displays recent brain operations to the player\n// Triggers: Configurable settings for this NPC alone\n// Notes: Allows the player to view/edit actual brain contents`;
     }
     // Update the hashcode to mark this history state as processed
     IS.hash = hash;
