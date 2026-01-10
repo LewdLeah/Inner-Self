@@ -203,6 +203,13 @@ Your task is to transform the character concept into a JSON object
 <details>
 <summary><b>(click to expand)</b></summary>
 
+### 1.0.2
+- Added config "Brain card notes store brains as JSON"
+- When disabled, brain card notes use a simpler colon + newline delimited format instead of JSON
+- Makes it much easier to manually edit NPC thoughts without accidentally breaking syntax
+- Backward and forward compatible; both formats are safe during parsing
+- Pull request by [dirtymined13](https://github.com/dirtymined13)
+
 ### 1.0.1
 - Added config "Half thought chance for Do/Say/Story"
 - Lets players decide if the thought formation chance should be reduced by half during Do/Say/Story turns
@@ -221,9 +228,10 @@ Your task is to transform the character concept into a JSON object
 <details>
 <summary><b>(click to expand)</b></summary>
 
+- v1.0.1 → v1.0.2 by [dirtymined13](https://github.com/dirtymined13)
 - v1.0.0 → v1.0.1 by [-Vinny-](https://play.aidungeon.com/profile/-Vinny-)
 
 </details>
 
 <p align="center"><i>Thank you so much for your curiosity and support~</i> ❤️</p>
-<p align="center"><b>Inner Self v1.0.1</b> · Made with love by <a href="https://play.aidungeon.com/profile/LewdLeah">LewdLeah</a></p>
+<p align="center"><b>Inner Self v1.0.2</b> · Made with love by <a href="https://play.aidungeon.com/profile/LewdLeah">LewdLeah</a></p>
