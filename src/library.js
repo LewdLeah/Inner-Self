@@ -4075,10 +4075,9 @@ function AutoCards(inHook, inText, inStop) {
                     "[\"alter leah\", () => {",
                     "    alterMind();",
                     "    const success = AutoCards().API.redoCard(\"Leah\", true, (",
-                    "        \"You subjected Leah to mind-altering magic\\n\" +",
+                    "        \"You used your magic on Leah\\n\" +",
                     "        \"Therefore she is now entirely \" +",
-                    "        minds[state.mind] +",
-                    "        \", utterly captivated by your will\"",
+                    "        minds[state.mind]",
                     "    ));",
                     "    if (success) {",
                     "        text = formatMessage(",
@@ -7375,13 +7374,13 @@ function AutoCards(inHook, inText, inStop) {
         }
     }); }
     function validateCooldown(cooldown) {
-        return boundInteger(0, cooldown, 9999, 22);
+        return boundInteger(0, cooldown, 9999, 40);
     }
     function validateEntryLimit(entryLimit) {
-        return boundInteger(200, entryLimit, 2000, 750);
+        return boundInteger(200, entryLimit, 2000, 600);
     }
     function validateMemoryLimit(memoryLimit) {
-        return boundInteger(1750, memoryLimit, 9900, 2750);
+        return boundInteger(1750, memoryLimit, 9900, 3200);
     }
     function validateMemCompRatio(memCompressRatio) {
         return boundInteger(20, memCompressRatio, 1250, 25);
