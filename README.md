@@ -204,6 +204,20 @@ Your task is to transform the character concept into a JSON object
 <details>
 <summary><b>(click to expand)</b></summary>
 
+### 1.0.3
+- Added config "Automatic disable for cache enabled models"
+- Lets players disable Inner Self automatically if a cache-enabled model is detected
+- Added config "Additional model block list"
+- Lets players decided if they want to disable certain models automatically if they are detected
+- Added config "Enable Model Warning Messages"
+- Added config "Notification Cached Model"
+- Added config "Notification blocked story model"
+- These changes let players enable or disable and customise a one-time per model warning message if a cached-model or block story model is detected.
+- Added config "Turn delay for Inner Self start"
+- This change prevents Inner Self from impacting turn one output
+- Adjusted AI prompts for Inner Self to reduce duplicate brain entries and reinforce story continuation
+- Pull request by [Fly3-r](https://github.com/Fly3-r)
+
 ### 1.0.2
 - Added config "Brain card notes store brains as JSON"
 - When disabled, brain card notes use a simpler colon + newline delimited format instead of JSON
@@ -229,6 +243,7 @@ Your task is to transform the character concept into a JSON object
 <details>
 <summary><b>(click to expand)</b></summary>
 
+- v1.0.2 → v1.0.3 by [Fly3-r](https://github.com/Fly3-r)
 - v1.0.1 → v1.0.2 by [dirtymined13](https://github.com/dirtymined13)
 - v1.0.0 → v1.0.1 by [-Vinny-](https://play.aidungeon.com/profile/-Vinny-)
 
