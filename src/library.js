@@ -71,6 +71,10 @@ globalThis.MainSettings = (class MainSettings {
     IS_AC_ENABLED_BY_DEFAULT: false
     // (true or false)
     ,
+    // Convert a lone em dash in model output to a semicolon? (dialogue is always exempt)
+    IS_LONE_EM_DASH_BECOMES_SEMICOLON: true
+    // (true or false)
+    ,
     }; //——————————————————————————————————————————————————————————————————————————————
 
     /**
@@ -282,6 +286,10 @@ function InnerSelf(hook) {
     IS_AC_ENABLED_BY_DEFAULT: false
     // (true or false)
     ,
+    // Convert a lone em dash in model output to a semicolon? (dialogue is always exempt)
+    IS_LONE_EM_DASH_BECOMES_SEMICOLON: true
+    // (true or false)
+    ,
     }; //——————————————————————————————————————————————————————————————————————————————
 
     const version = "v1.0.2";
@@ -335,6 +343,8 @@ function InnerSelf(hook) {
         encoding: "",
         // Currently triggered agent name (empty string = none)
         agent: "",
+        // Whether a thought task was injected into context this turn
+        task: false,
         // Monotonically increasing thought label counter
         label: 0,
         // Hash of recent history to detect retry or erase + continue turns
@@ -428,6 +438,7 @@ function InnerSelf(hook) {
      * @property {boolean} debug - Is debug mode enabled for inline task output visibility?
      * @property {boolean} pin - Is the config card pinned near the top of the list?
      * @property {boolean} auto - Is Auto-Cards enabled?
+     * @property {boolean} dash - Is a lone em dash in model output converted to a semicolon?
      * @property {string[]} agents - All agent names, ordered from highest to lowest trigger priority
      */
     /**
@@ -467,6 +478,7 @@ function InnerSelf(hook) {
             debug: false,
             pin: false,
             auto: false,
+            dash: true,
             agents: []
         });
         /** @type {config} */
@@ -621,6 +633,9 @@ function InnerSelf(hook) {
                 ) },
                 { message: "Enable debug mode to see model tasks:", ...factory(
                     "debug", S.IS_DEBUG_MODE_ENABLED_BY_DEFAULT
+                ) },
+                { message: "Convert lone em dashes to semicolons:", ...factory(
+                    "dash", S.IS_LONE_EM_DASH_BECOMES_SEMICOLON
                 ) },
                 { message: "Pin this config card near the top:", ...factory(
                     "pin", S.IS_CONFIG_CARD_PINNED_BY_DEFAULT
@@ -2246,6 +2261,10 @@ Inner Self ${version} is an AI Dungeon mod that grants memory, goals, secrets, p
 - You can safely uninstall Auto-Cards at any time
 - (true or false)
 
+> Convert lone em dashes to semicolons:
+- Rewrites a single em dash in the output as a semicolon (dialogue is always left alone)
+- (true or false)
+
 🌸 Love:
 - Please remember this is a personal passion project for me, something I do as a hobby, not as a job
 - Follow me on AI Dungeon to explore my other projects: ${u}
@@ -2372,11 +2391,20 @@ I hope you will have lots of fun!
             .replace(/[–−‒]/g, "-")
             .replace(/(?<=\S) [-—] (?=\S)/g, "—")
         )
-        // Convert one lone em-dash to a semicolon if appropriate
-        return (
-            ((str.match(/—/g) || []).length === 1)
-            && !str.includes(";") && !str.endsWith("—") && !str.startsWith("—")
-        ) ? str.replace("—", "; ") : str;
+        // Convert one lone em-dash to a semicolon, unless disabled or inside dialogue
+        if (!config.dash || ((str.match(/—/g) || []).length !== 1)
+            || str.includes(";") || str.endsWith("—") || str.startsWith("—")) {
+            return str;
+        }
+        const at = str.indexOf("—");
+        const left = str.slice(0, at);
+        const inDialogue = (
+            // Straight quotes: an odd count to the left means we're mid-quotation
+            (((left.match(/"/g) || []).length % 2) === 1)
+            // Directional quotes: an opener to the left and a closer to the right
+            || (/[«„“「‟]/.test(left) && /[»”」]/.test(str.slice(at + 1)))
+        );
+        return inDialogue ? str : str.replace("—", "; ");
     };
     // Trim IS.agent name before emptiness check
     if (((IS.agent = IS.agent.trim()) === "") && (blocks.length === 0)) {
