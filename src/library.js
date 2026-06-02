@@ -1062,6 +1062,8 @@ function InnerSelf(hook) {
         globalThis.stop ??= false;
         // Reset agent trigger for this turn
         IS.agent = "";
+        // No task injected yet this turn; set true only when a prompt is built
+        IS.task = false;
         /** @type {config} */
         const config = Config.get();
         if (config.pin) {
@@ -2020,6 +2022,7 @@ Follow the format **perfectly**.
             // Build the final context with appropriate prompts
             text = full ? (
                 // Brain is full, prompt for deletion
+                (IS.task = true),
                 `${prompt.directive[pov]}${self}${text.trim()}${boundary.lower}${prompt.forget[pov]}\n\n`
             ) : ((config.chance / ((config.half && [
                 // config.half -> reduce task chance after Do/Say/Story actions (player is driving)
@@ -2028,10 +2031,14 @@ Follow the format **perfectly**.
                 // Sometimes do nothing and emit a side effect on IS.agent
                 (IS.agent = " "),
                 `${nondirective()}${self}${text.trim()} `
-            ) : `${prompt.directive[pov]}${self}${text.trim()}${boundary.lower}${(
-                // Low context = simple prompt, high context = advanced prompt
-                (limit < 20000) ? prompt.assign[pov] : prompt.choice[pov]
-            )}\n\n`;
+            ) : (
+                // Inject a thought task for the triggered agent
+                (IS.task = true),
+                `${prompt.directive[pov]}${self}${text.trim()}${boundary.lower}${(
+                    // Low context = simple prompt, high context = advanced prompt
+                    (limit < 20000) ? prompt.assign[pov] : prompt.choice[pov]
+                )}\n\n`
+            );
         }
         // ==================== CONTEXT TRUNCATION ====================
         // Three-phase truncation to fit within AID's context limit
@@ -2266,6 +2273,28 @@ I hope you will have lots of fun!
     }
     // Strip zero-width chars from the model output before processing
     text = text.replace(/[\u200B-\u200D]+/g, "");
+    if (!IS.task) {
+        // No thought task was requested this turn -> leave the output untouched
+        // Don't rewrite grammar or strip brackets when no NPC is thinking
+        text = text.replace(/\n\n\n+/g, "\n\n");
+        if (text === "") {
+            // Guard against empty string outputs to avoid a known AID bug
+            text = "\u200B";
+            IS.agent = "";
+            return;
+        }
+        const prevText = getPrevAction()?.text ?? "";
+        if (/["\u00AB\u00BB\u201E\u201C\u201D\u300C\u300D\u201F]\s*$/.test(prevText) && /^\s*["\u00AB\u00BB\u201E\u201C\u201D\u300C\u300D\u201F]/.test(text)) {
+            // Prepend a linebreak if this and the previous actions place dialogue adjacently
+            text = text.trimStart();
+            prespace();
+        } else if (!/\s$/.test(prevText) && !/^\s/.test(text)) {
+            // Ensure taskless outputs still have a space of separation from the previous action
+            text = ` ${text}`;
+        }
+        IS.agent = "";
+        return;
+    }
     // Check if output looks like an unenclosed operation
     // Models sometimes forget their parentheses, the poor dears
     if (!/[()\[\]{}]/.test(text) && ((
