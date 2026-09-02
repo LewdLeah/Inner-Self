@@ -1380,6 +1380,50 @@ function InnerSelf(hook) {
          * Generates a simple PoV directive for non-task turns
          * @returns {string} System prompt for PoV guidance
          */
+        // ── OPTIMIZED CONTEXT ────────────────────────────────────────────
+        // Measured live on 2026-09-02, toggling the setting on and off inside
+        // one adventure: AI Dungeon's Optimized Context runs the context hook
+        // and lets a script read info.maxChars — which doubles — and then
+        // DISCARDS whatever the hook returns. Inner Self asks for a thought by
+        // rewriting that returned text, so with the setting on the request
+        // never reaches the model and thoughts stop completely. No error, no
+        // failed operation, nothing on the brain card: just silence.
+        //
+        // Story cards DO still reach the model, confirmed by a token echoed
+        // back from a card entry with the setting on. So the request travels on
+        // one instead. The story is already in the context; only the directive,
+        // the brain block and the format rules have to move.
+        //
+        // The card is keyed on ordinary words because AI Dungeon includes cards
+        // "based on how recently and frequently their triggers were used" — a
+        // card with NO keys is never matched, which is why clearing `keys` is
+        // what deactivates one elsewhere in this script.
+        const THOUGHT_CARD_TITLE = "\uD83E\uDDE0 Inner Self Task — do not edit";
+        const THOUGHT_CARD_KEYS = "the,a,an,you,and,to,of,it,is,was,in,on";
+        const cacheEfficient = () => {
+            try { return info.useCacheEfficient === true; } catch (error) { return false; }
+        };
+        const writeThoughtCard = (body = "") => {
+            try {
+                let card = storyCards.find(c => (c.title || "") === THOUGHT_CARD_TITLE);
+                if (!card) {
+                    if (body === "") {
+                        return;
+                    }
+                    addStoryCard(THOUGHT_CARD_KEYS, "", "class", THOUGHT_CARD_TITLE, "");
+                    card = storyCards.find(c => (c.title || "") === THOUGHT_CARD_TITLE);
+                }
+                if (!card) {
+                    return;
+                }
+                card.entry = String(body).slice(0, 2000);
+                card.keys = THOUGHT_CARD_KEYS;
+                card.title = THOUGHT_CARD_TITLE;
+                card.description = "Written automatically every turn so Inner Self can ask for a thought while"
+                    + " AI Dungeon's Optimized Context setting is on, which stops scripts adding to the context."
+                    + " Editing this does nothing; it is overwritten each turn. Deleting it stops thoughts.";
+            } catch (error) { /* bookkeeping must never break the turn */ }
+        };
         const nondirective = () => (
             `<SYSTEM>\n# Always continue the story from ${ownership(config.player)} ${pov} person perspective.\n</SYSTEM>`
         );
@@ -2017,21 +2061,64 @@ Follow the format **perfectly**.
                 // Primitives pass through
                 : t[p]
             ); } });
-            // Build the final context with appropriate prompts
-            text = full ? (
-                // Brain is full, prompt for deletion
-                `${prompt.directive[pov]}${self}${text.trim()}${boundary.lower}${prompt.forget[pov]}\n\n`
-            ) : ((config.chance / ((config.half && [
+            // Build the final context with appropriate prompts.
+            // The random draw is evaluated exactly once, and only when the brain
+            // is not full, so task turns fall exactly where they always did.
+            const skipTask = !full && ((config.chance / ((config.half && [
                 // config.half -> reduce task chance after Do/Say/Story actions (player is driving)
                 "do", "say", "story"
-            ].includes(getPrevAction()?.type)) ? 200 : 100)) < Math.random()) ? (
-                // Sometimes do nothing and emit a side effect on IS.agent
-                (IS.agent = " "),
-                `${nondirective()}${self}${text.trim()} `
-            ) : `${prompt.directive[pov]}${self}${text.trim()}${boundary.lower}${(
-                // Low context = simple prompt, high context = advanced prompt
-                (limit < 20000) ? prompt.assign[pov] : prompt.choice[pov]
-            )}\n\n`;
+            ].includes(getPrevAction()?.type)) ? 200 : 100)) < Math.random());
+            if (skipTask) {
+                // Side effect on IS.agent, exactly as before
+                IS.agent = " ";
+            }
+            const taskPrompt = full
+                ? prompt.forget[pov]
+                : skipTask
+                    ? ""
+                    // Low context = simple prompt, high context = advanced prompt
+                    : ((limit < 20000) ? prompt.assign[pov] : prompt.choice[pov]);
+            if (cacheEfficient()) {
+                // Anything added to the context here would be discarded, so the
+                // request goes on a card instead and the context is left alone.
+                //
+                // What goes on the card is ORDERED BY IMPORTANCE, because a card
+                // entry is cut at its limit and the pieces are not equal.
+                // Measured: format rules 1463 characters, OPERATING ENVIRONMENT
+                // directive 709, brain block 99 — about 2270 against a card that
+                // holds roughly 2000. A plain concatenation drops the END, which
+                // is where "THE FIRST CHAR OF THE WHOLE OUTPUT MUST BE (" lives,
+                // and losing that line loses everything: the block parser has
+                // nothing left to find.
+                //
+                // So the rules are reserved whole. The brain block goes first if
+                // space is short — it is context rather than instruction, and
+                // the agent's own brain card carries it anyway. The directive is
+                // then trimmed a LINE at a time from the end, keeping its
+                // opening bullets and its closing tag, so what survives is still
+                // well-formed rather than cut mid-sentence.
+                const CARD_CAP = 2000;
+                const tail = `${boundary.lower}${taskPrompt}`;
+                let head = String(prompt.directive[pov] || "");
+                let brainBlock = String(self || "");
+                const room = Math.max(0, CARD_CAP - tail.length);
+                if ((head.length + brainBlock.length) > room) {
+                    brainBlock = "";
+                }
+                if (head.length > room) {
+                    const lines = head.trim().split("\n").filter(l => l.trim() !== "</SYSTEM>");
+                    while ((lines.length > 1) && ((lines.join("\n").length + 12) > room)) {
+                        lines.pop();
+                    }
+                    head = `${lines.join("\n")}\n</SYSTEM>\n`;
+                }
+                writeThoughtCard(taskPrompt ? `${head}${brainBlock}${tail}` : "");
+                text = `${text.trim()}\n\n`;
+            } else {
+                text = skipTask
+                    ? `${nondirective()}${self}${text.trim()} `
+                    : `${prompt.directive[pov]}${self}${text.trim()}${boundary.lower}${taskPrompt}\n\n`;
+            }
         }
         // ==================== CONTEXT TRUNCATION ====================
         // Three-phase truncation to fit within AID's context limit
