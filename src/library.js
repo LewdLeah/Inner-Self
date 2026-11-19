@@ -2124,8 +2124,9 @@ Follow the format **perfectly**.
         }
         text ||= "\u200B";
         return;
-    } else if ((text.includes(">>>") && text.includes("<<<")) || (3000 < text.length)) {
+    } else if ((text.includes(">>>") && text.includes("<<<")) || ((3000 < text.length) && !IS.task)) {
         // Output contains an Auto-Cards thingy or is suspiciously long
+        // (Long outputs are still parsed when a thought task was requested this turn)
         // Safer to leave untouched
         IS.agent = "";
         return;
