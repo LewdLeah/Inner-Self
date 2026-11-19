@@ -1057,7 +1057,9 @@ function InnerSelf(hook) {
     // Infer the current lifecycle hook
     if ((hook === "context") || Number.isInteger(info.maxChars)) {
         // Calculate the player's context limit with a small buffer
-        const limit = Math.max((Math.min(text.length, info.maxChars) - 10), 4500);
+        // The limit is the context budget, not the length of the text this hook was given
+        // Otherwise every thought task pushes out as much text as it adds, even when the context has room
+        const limit = Math.max((info.maxChars - 10), 4500);
         // Ensure stop variable exists (the AID script sandbox is silly)
         globalThis.stop ??= false;
         // Reset agent trigger for this turn
